@@ -23,8 +23,6 @@ package pe.cibertec.criba;
 *
 */
 public class GeneradorDePrimos {
-	
-	private static int dim;
 	private static boolean esPrimo[];
 	private static int primos[];
 	
@@ -38,50 +36,47 @@ public class GeneradorDePrimos {
 		if(max < 2){
 			return new int[0]; //Vector vacío
 		}else{
-			inicializarCriba(max);
-			cribar();
-			rellenarPrimos();
+			inicializarCandidatos(max);
+			eliminarMultiplos();
+			obtenerCandidatosNoEliminados();
 			
 			return primos;
 		}
 	}
 
-	private static void inicializarCriba(int max) {
+	private static void inicializarCandidatos(int max) {
 		int i;
-		//Declaraciones
-		dim = max + 1; //Tamaño del array
-		esPrimo = new boolean[dim];
-		
-		//Inicializar el array
-		for (i = 0; i < dim; i++){
-			esPrimo[i] = true;
-		}
+		esPrimo = new boolean[max+1];
 		
 		//Eliminamos el 0 y el 1, que no son primos
 		esPrimo[0] = esPrimo[1] = false;
+		
+		//Inicializar el array
+		for (i = 2; i < esPrimo.length; i++){
+			esPrimo[i] = true;
+		}
+		
 	}
 
-	private static void cribar(){
+	private static void eliminarMultiplos(){
 		
 		int i, j;
 		
-		for ( i = 0; i< Math.sqrt(dim) + 1; i++) {
+		for ( i = 0; i< Math.sqrt(esPrimo.length) + 1; i++) {
 			if(esPrimo[i]){
 				//Eliminamos los múltiplos de i
-				for ( j=2*i ; j < dim ; j += i){
+				for ( j=2*i ; j < esPrimo.length ; j += i){
 					esPrimo[j] = false;
 				}
 			}
 		}
 	}
 	
-	private static void rellenarPrimos(){
+	private static void obtenerCandidatosNoEliminados(){
 		
-		int i,j;
-		
-		//¿Cúantos primos hay?
-		int cuenta = 0;
-		 for (i = 0; i < dim; i++){
+		int i,j,cuenta;
+		cuenta = 0; //contador de Primos
+		 for (i = 0; i < esPrimo.length; i++){
 			 if(esPrimo[i]){
 				 cuenta++;
 			 }
@@ -90,7 +85,7 @@ public class GeneradorDePrimos {
 		 //Rellenamos el vector de números primos
 		 primos = new int[cuenta];
 		 
-		 for ( i = 0 , j = 0; i < dim; i++) {
+		 for ( i = 0 , j = 0; i < esPrimo.length; i++) {
 			if(esPrimo[i]){
 				primos[j++] = i;
 			}
