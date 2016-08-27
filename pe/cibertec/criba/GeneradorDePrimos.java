@@ -60,36 +60,46 @@ public class GeneradorDePrimos {
 
 	private static void eliminarMultiplos(){
 		
-		int i, j;
+		int i;
 		
-		for ( i = 0; i< Math.sqrt(esPrimo.length) + 1; i++) {
+		for ( i = 0; i< maxFactor(); i++) {
 			if(esPrimo[i]){
-				//Eliminamos los múltiplos de i
-				for ( j=2*i ; j < esPrimo.length ; j += i){
-					esPrimo[j] = false;
-				}
+				eliminarMultiplosDe(i);
 			}
 		}
 	}
+
+	private static void eliminarMultiplosDe(int i) {
+		int multiplo;
+		for ( multiplo=2*i ; multiplo < esPrimo.length ; multiplo += i){
+			esPrimo[multiplo] = false;
+		}
+	}
+	
+	private static int maxFactor(){
+		return (int) Math.sqrt(esPrimo.length);
+	}
 	
 	private static void obtenerCandidatosNoEliminados(){
+	
+		int cuenta = cuentaPrimos();
 		
-		int i,j,cuenta;
-		cuenta = 0; //contador de Primos
-		 for (i = 0; i < esPrimo.length; i++){
-			 if(esPrimo[i]){
-				 cuenta++;
-			 }
-		 }
-		 
-		 //Rellenamos el vector de números primos
-		 primos = new int[cuenta];
-		 
-		 for ( i = 0 , j = 0; i < esPrimo.length; i++) {
+		 primos = new int[cuenta];		 
+		 for (int i = 0 , j = 0; i < esPrimo.length; i++) {
 			if(esPrimo[i]){
 				primos[j++] = i;
 			}
 		}
+	}
+
+	private static int cuentaPrimos() {
+		int cuenta = 0; //contador de Primos
+		 for (int i = 0; i < esPrimo.length; i++){
+			 if(esPrimo[i]){
+				 cuenta++;
+			 }
+		 }
+		return cuenta;
 	}
 }
 
